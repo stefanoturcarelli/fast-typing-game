@@ -120,10 +120,74 @@ a {
 /* !                                 CONTENT                                  */
 /* ! ------------------------------------------------------------------------ */
 
+:root {
+  --accent-color: #ffa56a;
+  --font-color-1: #fdfac5;
+}
+
 .container {
   border: 1px solid black;
 }
 
 body {
   height: 100dvh;
+}
+
+.header-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.header-menu-btn-1,
+.header-menu-btn-2,
+.header-menu-btn-3,
+.header-menu-btn-4 {
+  font-family: "Lilita One", sans-serif;
+  background-color: var(--accent-color);
+  color: var(--font-color-1);
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  transition: all 0.2s ease-in-out;
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.header-menu-btn-1:hover,
+.header-menu-btn-2:hover,
+.header-menu-btn-3:hover,
+.header-menu-btn-4:hover {
+  transform: scale(1.1);
+}
+
+.header-menu-btn-1:active,
+.header-menu-btn-2:active,
+.header-menu-btn-3:active,
+.header-menu-btn-4:active {
+  transform: scale(0.9);
+}
+
+.header-menu-btn-1 {
+  background-color: #ff6b6b;
+}
+
+.header-menu-btn-2 {
+  background-color: #48dbfb;
+}
+
+.header-menu-btn-3 {
+  background-color: #1dd1a1;
+}
+
+.header-menu-btn-4 {
+  background-color: #feca57;
+}
+
+.header-menu-btn-1,
+.header-menu-btn-2,
+.header-menu-btn-3,
+.header-menu-btn-4 {
+  font-size: 2rem;
 }

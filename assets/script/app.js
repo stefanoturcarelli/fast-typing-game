@@ -185,19 +185,20 @@ function startTimer() {
       stopMusic();
       playEndingsound();
       let date = new Date();
-      // Date options for the score
+      // Date options for the score (hours, minutes, and seconds)
       const options = {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
       };
-      date = date.toLocaleDateString("en-US", options);
+      const timeString = date.toLocaleTimeString("en-US", options);
+
       game.percentage = Math.round((game.points / game.words.length) * 100);
 
-      const score = new Score(date, game.points, game.percentage);
+      const score = new Score(timeString, game.points, game.percentage);
       print(`score: ${score.getScore()}`);
       randomWordDisplay.textContent = `${score.getScore()}`;
+
       clearInterval(timer);
       game.isGameFinished = true;
       inputWord.style.display = "none";
@@ -206,6 +207,10 @@ function startTimer() {
       gameTimer.style.visibility = "hidden";
       game.isGameFinished = true;
       document.removeEventListener("keydown", playKeySound);
+      game.seconds = 5;
+      game.points = 0;
+      game.percentage = 0;
+            
     }
   }, 1000);
 }

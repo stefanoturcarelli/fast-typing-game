@@ -358,3 +358,12 @@ input[type="text"]:focus {
   text-align: center;
   text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
 }
+
+.stats {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}

@@ -150,12 +150,16 @@ const gameTimer = select(".game-timer");
 const overlay = select(".overlay");
 const overlayCloseBtn = select(".overlay-content-close-btn");
 
+const gameWords = select(".game-words");
+const gamePercentage = select(".game-percentage");
+const gameDateScore = select(".game-date-score");
+
 const backgroundMusic = new Audio("./assets/media/sound/music.mp3");
 
 const game = {
   words: words,
   usedWords: [],
-  seconds: 30,
+  seconds: 5,
   points: 0,
   percentage: 0,
   currentWord: "",
@@ -196,18 +200,21 @@ function startTimer() {
       game.percentage = Math.round((game.points / game.words.length) * 100);
 
       const score = new Score(timeString, game.points, game.percentage);
-      print(`score: ${score.getScore()}`);
-      randomWordDisplay.textContent = `${score.getScore()}`;
+
+      gameDateScore.textContent = `${score.getScore().split(",")[0]}`;
+      gameWords.textContent = `${score.getScore().split(",")[1]}`;
+      gamePercentage.textContent = `${score.getScore().split(",")[2]}`;
 
       clearInterval(timer);
       game.isGameFinished = true;
       inputWord.style.display = "none";
+      randomWordDisplay.textContent = "Game Over";
       buttonStart.classList.remove("hidden");
       buttonReset.classList.add("hidden");
       gameTimer.style.visibility = "hidden";
       game.isGameFinished = true;
       document.removeEventListener("keydown", playKeySound);
-      game.seconds = 30;
+      game.seconds = 5;
       game.points = 0;
       game.percentage = 0;
     }
@@ -330,6 +337,9 @@ onEvent("click", buttonMenu, () => {
 
 // Start button
 onEvent("click", buttonStart, () => {
+  gameDateScore.textContent = "--";
+  gameWords.textContent = "0";
+  gamePercentage.textContent = "0";
   inputWord.style.display = "block";
   onEvent("keydown", document, playKeySound);
   playButtonSound();

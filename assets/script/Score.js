@@ -28,9 +28,7 @@ class Score {
   }
 
   getScore() {
-    return `${this.#date} - Score: ${this.#hits} - Percentage: ${
-      this.#percentage
-    }%`;
+    return `${this.#date},${this.#hits},${this.#percentage}`;
   }
 }
 

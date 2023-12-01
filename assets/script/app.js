@@ -14,7 +14,7 @@ import {
 
 import Score from "./Score.js";
 
-const words = [
+const wordsArray = [
   "dinosaur",
   "love",
   "pineapple",
@@ -137,6 +137,8 @@ const words = [
   "escape",
 ];
 
+const usedWordsArray = [];
+
 const gameForm = select("#game-form");
 const buttonAbout = select(".header-menu-btn-1");
 const buttonCoins = select(".header-menu-btn-2");
@@ -147,6 +149,8 @@ const buttonReset = select(".game-reset-btn");
 const inputWord = select(".game-input");
 const randomWordDisplay = select(".random-word-display");
 const gameTimer = select(".game-timer");
+const scoresArrayDisplay = select(".scores-array-container");
+const statsDisplay = select(".stats");
 
 // Overlay
 const overlayAbout = select(".overlay-about");
@@ -159,109 +163,27 @@ const gameWords = select(".game-words");
 const gamePercentage = select(".game-percentage");
 const gameDateScore = select(".game-date-score");
 
+let seconds = 30;
+let points = 0;
+let percentage = 0;
+let currentWord = "";
+let currentWordIndex = 0;
+
+const scoresArray = [];
+
 const backgroundMusic = new Audio("./assets/media/sound/music.mp3");
-
-const game = {
-  words: words,
-  usedWords: [],
-  seconds: 30,
-  points: 0,
-  percentage: 0,
-  currentWord: "",
-  currentWordIndex: 0,
-  isGameStarted: false,
-  isGameFinished: false,
-  isGamePaused: false,
-  isGameReset: false,
-  isGameMuted: false,
-  isGameMusicMuted: false,
-  isGameSoundMuted: false,
-};
-
-/* 
-!-------------------------------------------------------------------------------
-! Game Timer
-!-------------------------------------------------------------------------------
-*/
-
-function startTimer() {
-  const timer = setInterval(() => {
-    // Keydown event
-    game.seconds--;
-    gameTimer.textContent = game.seconds;
-    if (game.seconds === 0) {
-      inputWord.value = "";
-      stopMusic();
-      playEndingsound();
-      let date = new Date();
-      // Date options for the score (hours, minutes, and seconds)
-      const options = {
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-      };
-      const timeString = date.toLocaleTimeString("en-US", options);
-
-      game.percentage = Math.round((game.points / game.words.length) * 100);
-
-      const score = new Score(timeString, game.points, game.percentage);
-
-      gameDateScore.textContent = `${score.getScore().split(",")[0]}`;
-      gameWords.textContent = `${score.getScore().split(",")[1]}`;
-      gamePercentage.textContent = `${score.getScore().split(",")[2]}`;
-
-      clearInterval(timer);
-      game.isGameFinished = true;
-      inputWord.style.display = "none";
-      randomWordDisplay.textContent = "Game Over";
-      buttonStart.classList.remove("hidden");
-      buttonReset.classList.add("hidden");
-      gameTimer.style.visibility = "hidden";
-      game.isGameFinished = true;
-      document.removeEventListener("keydown", playKeySound);
-      game.seconds = 30;
-      game.points = 0;
-      game.percentage = 0;
-    }
-  }, 1000);
-}
-
-/* 
-!-------------------------------------------------------------------------------
-! Game Sounds
-!-------------------------------------------------------------------------------
-*/
-
-function playButtonSound() {
-  const audio = new Audio("./assets/media/sound/button.mp3");
-  audio.play();
-}
+const endingSound = new Audio("./assets/media/sound/ending.mp3");
+const buttonSound = new Audio("./assets/media/sound/button.mp3");
 
 function playKeySound() {
   const audio = new Audio("./assets/media/sound/key.mp3");
   audio.play();
 }
 
-function playMusic() {
-  backgroundMusic.play();
-}
-
-function stopMusic() {
+function stopBackgroundMusic() {
   backgroundMusic.pause();
-  // Reset the audio to the beginning
   backgroundMusic.currentTime = 0;
 }
-
-function playEndingsound() {
-  const audio = new Audio("./assets/media/sound/ending.mp3");
-  audio.play();
-}
-
-/* 
-!-------------------------------------------------------------------------------
-! Game Logic
-!-------------------------------------------------------------------------------
-*/
 
 function printRandomWordFromArray() {
   const randomWord = getRandomWord();
@@ -270,37 +192,29 @@ function printRandomWordFromArray() {
 }
 
 function getRandomWord() {
-  const remainingWords = game.words.filter(
-    (word) => !game.usedWords.includes(word)
+  const remainingWords = wordsArray.filter(
+    (word) => !usedWordsArray.includes(word)
   );
   if (remainingWords.length === 0) {
-    // All words have been used, reset the usedWords array
-    game.usedWords = [];
+    usedWordsArray = [];
   }
 
   const randomIndex = randomNumber(0, remainingWords.length - 1);
   const randomWord = remainingWords[randomIndex];
-  // Add the word to usedWords
-  game.usedWords.push(randomWord);
+  usedWordsArray.push(randomWord);
   return randomWord;
 }
 
 function compareWords() {
   const typedWord = inputWord.value.trim().toLowerCase();
 
-  if (typedWord === game.currentWord.toLowerCase()) {
-    game.points++;
+  if (typedWord === currentWord.toLowerCase()) {
+    points++;
     inputWord.value = "";
-    game.currentWord = printRandomWordFromArray();
-    game.currentWordIndex = game.words.indexOf(game.currentWord);
+    currentWord = printRandomWordFromArray();
+    currentWordIndex = wordsArray.indexOf(currentWord);
   }
 }
-
-/* 
-!-------------------------------------------------------------------------------
-! Buttons
-!-------------------------------------------------------------------------------
-*/
 
 // * About button and overlay
 function showOverlayAbout() {
@@ -312,7 +226,7 @@ function hideOverlayAbout() {
 }
 
 onEvent("click", buttonAbout, () => {
-  playButtonSound();
+  buttonSound.play();
   showOverlayAbout();
 });
 
@@ -326,9 +240,8 @@ function hideOverlayCoins() {
   overlayCoins.classList.remove("visible");
 }
 
-// Coins button
 onEvent("click", buttonCoins, () => {
-  playButtonSound();
+  buttonSound.play();
   showOverlayCoins();
 });
 
@@ -343,7 +256,7 @@ function hideOverlayGems() {
 }
 
 onEvent("click", buttonGems, () => {
-  playButtonSound();
+  buttonSound.play();
   showOverlayGems();
 });
 
@@ -358,13 +271,13 @@ function hideOverlayMenu() {
 }
 
 onEvent("click", buttonMenu, () => {
-  playButtonSound();
+  buttonSound.play();
   showOverlayMenu();
 });
 
 overlayCloseBtns.forEach((btn) => {
   onEvent("click", btn, () => {
-    playButtonSound();
+    buttonSound.play();
     hideOverlayAbout();
     hideOverlayCoins();
     hideOverlayGems();
@@ -372,63 +285,126 @@ overlayCloseBtns.forEach((btn) => {
   });
 });
 
-// Start button
-onEvent("click", buttonStart, () => {
+onEvent("click", buttonReset, () => {
+  buttonSound.play();
+});
+
+function startGame() {
+  backgroundMusic.play();
+  initializeGameDisplay();
+  onEvent("keydown", document, playKeySound);
+  startTimer();
+}
+
+function initializeGameDisplay() {
+  currentWord = printRandomWordFromArray();
+  currentWordIndex = wordsArray.indexOf(currentWord);
+  buttonStart.classList.add("hidden");
+  buttonReset.classList.remove("hidden");
+  gameTimer.style.visibility = "visible";
   gameDateScore.textContent = "";
   gameWords.textContent = "0";
   gamePercentage.textContent = "0";
-  inputWord.style.display = "block";
-  onEvent("keydown", document, playKeySound);
-  playButtonSound();
-  playMusic();
-  startTimer();
+  inputWord.style.opacity = "1";
+}
+
+function startTimer() {
+  const timer = setInterval(() => {
+    updateGameTimer();
+
+    if (seconds === 0) {
+      endGame(timer);
+    }
+  }, 1000);
+}
+
+function updateGameTimer() {
+  seconds--;
+  gameTimer.textContent = seconds;
+}
+
+onEvent("click", buttonStart, () => {
+  inputWord.focus();
+  buttonSound.play();
+  startGame();
+  statsDisplay.style.opacity = "1";
 });
 
-// Reset button
-onEvent("click", buttonReset, () => {
+function endGame(timer) {
   inputWord.value = "";
-  inputWord.style.visibility = "hidden";
+  stopBackgroundMusic();
+  endingSound.play();
+
+  const timeString = getCurrentTimeString();
+  updateGameScore(timeString);
+
+  clearInterval(timer);
+  finalizeGame();
+}
+
+function getCurrentTimeString() {
+  const date = new Date();
+  const options = {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  };
+  return date.toLocaleTimeString("en-US", options);
+}
+
+function updateGameScore(timeString) {
+  percentage = Math.round((points / wordsArray.length) * 100);
+  const score = new Score(timeString, points, percentage);
+  gameDateScore.textContent = score.getScore().split(",")[0];
+  gameWords.textContent = score.getScore().split(",")[1];
+  gamePercentage.textContent = score.getScore().split(",")[2];
+  scoresArray.push(score);
+  printScoresArray();
+}
+
+function printScoresArray() {
+  scoresArrayDisplay.innerHTML = "";
+  scoresArray.forEach((score) => {
+    const scoreItem = create("li");
+    scoreItem.textContent = `Time: ${score.getScore().split(",")[0]} - Words: ${
+      score.getScore().split(",")[1]
+    } - Percentage: ${score.getScore().split(",")[2]}%`;
+    scoresArrayDisplay.appendChild(scoreItem);
+  });
+}
+
+function finalizeGame() {
+  inputWord.style.opacity = "0";
+  randomWordDisplay.textContent = "Game Over";
   buttonStart.classList.remove("hidden");
   buttonReset.classList.add("hidden");
   gameTimer.style.visibility = "hidden";
-  playButtonSound();
-});
+  document.removeEventListener("keydown", playKeySound);
+  resetGameValues();
+}
 
-onEvent("click", buttonStart, () => {
-  // Focus on the input field
-  inputWord.focus();
-
-  // Start the game
-  game.currentWord = printRandomWordFromArray();
-  game.currentWordIndex = game.words.indexOf(game.currentWord);
-
-  // Hide the start button
-  buttonStart.classList.add("hidden");
-  // Show the reset button
-  buttonReset.classList.remove("hidden");
-  // Show timer
-  gameTimer.style.visibility = "visible";
-});
+function resetGameValues() {
+  seconds = 30;
+  points = 0;
+  percentage = 0;
+}
 
 onEvent("input", inputWord, () => {
   compareWords();
-  gameWords.textContent = game.points;
-  gamePercentage.textContent = Math.round(
-    (game.points / game.words.length) * 100
-  );
+  gameWords.textContent = points;
+  gamePercentage.textContent = Math.round((points / wordsArray.length) * 100);
 });
 
-// Form submission
 // Prevent the default form submission behavior
 onEvent("submit", gameForm, (event) => {
   event.preventDefault();
 
   const typedWord = inputWord.value.trim().toLowerCase();
 
-  if (typedWord === game.currentWord.toLowerCase()) {
-    game.points++;
-    inputWord.value = ""; // Clear the input field
-    game.currentWord = printRandomWordFromArray();
-    game.currentWordIndex = game.words.indexOf(game.currentWord);
+  if (typedWord === currentWord.toLowerCase()) {
+    points++;
+    inputWord.value = "";
+    currentWord = printRandomWordFromArray();
+    currentWordIndex = wordsArray.indexOf(currentWord);
   }
 });

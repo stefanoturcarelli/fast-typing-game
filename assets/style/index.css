@@ -126,10 +126,6 @@ a {
   --border-color-1: #fdfac5;
 }
 
-.container {
-  /* outline: auto; */
-}
-
 body {
   height: 100dvh;
   background-color: var(--font-color-1);
@@ -246,7 +242,7 @@ input[type="text"] {
   font-size: 2rem;
   font-family: "Lilita One", sans-serif;
   transition: all 0.2s ease-in-out;
-  visibility: hidden;
+  /* visibility: hidden; */
 }
 
 input[type="text"]:focus {
@@ -348,4 +344,17 @@ input[type="text"]:focus {
 
 .overlay-content-close-btn:active {
   transform: scale(0.99);
+}
+
+.overlay-content-title {
+  font-family: "Lilita One", sans-serif;
+  font-size: 3rem;
+  text-align: center;
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.overlay-content-text {
+  font-size: 2rem;
+  text-align: center;
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
 }

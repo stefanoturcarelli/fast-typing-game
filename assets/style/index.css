@@ -123,14 +123,25 @@ a {
 :root {
   --accent-color: #ffa56a;
   --font-color-1: #fdfac5;
+  --border-color-1: #fdfac5;
 }
 
 .container {
-  border: 1px solid black;
+  /* outline: auto; */
 }
 
 body {
   height: 100dvh;
+}
+
+main {
+  min-height: 70dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 0;
 }
 
 .header-menu {
@@ -190,4 +201,79 @@ body {
 .header-menu-btn-3,
 .header-menu-btn-4 {
   font-size: 2rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+input[type="button"] {
+  font-family: "Lilita One", sans-serif;
+  background-color: var(--accent-color);
+  color: var(--font-color-1);
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  transition: all 0.2s ease-in-out;
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+input[type="button"]:hover {
+  transform: scale(1.1);
+}
+
+input[type="button"]:active {
+  transform: scale(0.9);
+}
+
+input[type="text"] {
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid black;
+  outline: none;
+  text-align: center;
+  font-size: 2rem;
+  font-family: "Lilita One", sans-serif;
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="text"]:focus {
+  border: 1px solid var(--accent-color);
+}
+
+.footer-information {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 0;
+}
+
+.random-word-display {
+  font-family: "Lilita One", sans-serif;
+  font-size: 5rem;
+  text-align: center;
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.game-timer {
+  font-family: "Lilita One", sans-serif;
+  font-size: 5rem;
+  text-align: center;
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  visibility: hidden;
 }

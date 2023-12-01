@@ -164,7 +164,7 @@ const backgroundMusic = new Audio("./assets/media/sound/music.mp3");
 const game = {
   words: words,
   usedWords: [],
-  seconds: 5,
+  seconds: 30,
   points: 0,
   percentage: 0,
   currentWord: "",
@@ -219,7 +219,7 @@ function startTimer() {
       gameTimer.style.visibility = "hidden";
       game.isGameFinished = true;
       document.removeEventListener("keydown", playKeySound);
-      game.seconds = 5;
+      game.seconds = 30;
       game.points = 0;
       game.percentage = 0;
     }
@@ -412,6 +412,10 @@ onEvent("click", buttonStart, () => {
 
 onEvent("input", inputWord, () => {
   compareWords();
+  gameWords.textContent = game.points;
+  gamePercentage.textContent = Math.round(
+    (game.points / game.words.length) * 100
+  );
 });
 
 // Form submission

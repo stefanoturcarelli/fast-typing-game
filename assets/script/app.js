@@ -155,6 +155,8 @@ const buttonReset = select(".game-reset-btn");
 const inputWord = select(".game-input");
 const randomWordDisplay = select(".random-word-display");
 const gameTimer = select(".game-timer");
+const overlay = select(".overlay");
+const overlayCloseBtn = select(".overlay-content-close-btn");
 
 // Game timer
 function startTimer() {
@@ -183,7 +185,11 @@ function playMusic() {
   audio.play();
 }
 
-onEvent("click", buttonSettings, playButtonSound);
+onEvent("click", buttonSettings, () => {
+  playButtonSound();
+  showOverlay();
+});
+
 onEvent("click", buttonCoins, playButtonSound);
 onEvent("click", buttonGems, playButtonSound);
 onEvent("click", buttonMenu, playButtonSound);
@@ -193,6 +199,11 @@ onEvent("click", buttonStart, () => {
   startTimer();
 });
 onEvent("click", buttonReset, playButtonSound);
+
+onEvent("click", overlayCloseBtn, () => {
+  playButtonSound();
+  hideOverlay();
+});
 
 onEvent("keydown", document, playKeySound);
 
@@ -288,3 +299,11 @@ onEvent("input", inputWord, () => {
     print(game.words.length);
   }
 });
+
+function showOverlay() {
+  overlay.classList.add("visible");
+}
+
+function hideOverlay() {
+  overlay.classList.remove("visible");
+}

@@ -174,9 +174,15 @@ const scoresArray = [];
 const backgroundMusic = new Audio("./assets/media/sound/music.mp3");
 const endingSound = new Audio("./assets/media/sound/ending.mp3");
 const buttonSound = new Audio("./assets/media/sound/button.mp3");
+const keySound = new Audio("./assets/media/sound/key.mp3");
+
+backgroundMusic.volume = 0.1;
+endingSound.volume = 0.4;
+buttonSound.volume = 0.3;
 
 function playKeySound() {
   const audio = new Audio("./assets/media/sound/key.mp3");
+  audio.volume = 0.2;
   audio.play();
 }
 
@@ -399,6 +405,7 @@ function resetGameValues() {
   seconds = 30;
   points = 0;
   percentage = 0;
+  inputWord.value = "";
 }
 
 onEvent("input", inputWord, () => {

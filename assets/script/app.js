@@ -198,7 +198,36 @@ onEvent("click", buttonStart, () => {
   playMusic();
   startTimer();
 });
-onEvent("click", buttonReset, playButtonSound);
+onEvent("click", buttonReset, () => {
+  inputWord.value = "";
+  inputWord.style.visibility = "hidden";
+  buttonStart.classList.remove("hidden");
+  buttonReset.classList.add("hidden");
+  gameTimer.style.visibility = "hidden";
+  playButtonSound();
+  game.isGameReset = true;
+  game.isGameStarted = false;
+  game.isGameFinished = false;
+  game.isGamePaused = false;
+  game.isGameMuted = false;
+  game.isGameMusicMuted = false;
+  game.isGameSoundMuted = false;
+  game.seconds = 99;
+  game.points = 0;
+  gameTimer.textContent = game.seconds;
+  print(game.isGameReset);
+  print(game.isGameStarted);
+  print(game.isGameFinished);
+  print(game.isGamePaused);
+  print(game.isGameMuted);
+  print(game.isGameMusicMuted);
+  print(game.isGameSoundMuted);
+  print(game.seconds);
+  print(game.points);
+  print(game.currentWord);
+  print(game.currentWordIndex);
+  print(game.words.length);
+});
 
 onEvent("click", overlayCloseBtn, () => {
   playButtonSound();
@@ -213,8 +242,6 @@ onEvent("keydown", document, (event) => {
     event.preventDefault();
   }
 });
-
-// ! Game logic
 
 const game = {
   words: words,
@@ -283,6 +310,8 @@ onEvent("click", buttonStart, () => {
   buttonReset.classList.remove("hidden");
   // Show timer
   gameTimer.style.visibility = "visible";
+  // Show input
+  inputWord.style.visibility = "visible";
 });
 
 onEvent("input", inputWord, () => {

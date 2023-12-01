@@ -200,7 +200,7 @@ function startTimer() {
       randomWordDisplay.textContent = `${score.getScore()}`;
       clearInterval(timer);
       game.isGameFinished = true;
-      inputWord.style.visibility = "hidden";
+      inputWord.style.display = "none";
       buttonStart.classList.remove("hidden");
       buttonReset.classList.add("hidden");
       gameTimer.style.visibility = "hidden";
@@ -326,6 +326,7 @@ onEvent("click", buttonMenu, () => {
 
 // Start button
 onEvent("click", buttonStart, () => {
+  inputWord.style.display = "block";
   onEvent("keydown", document, playKeySound);
   playButtonSound();
   playMusic();

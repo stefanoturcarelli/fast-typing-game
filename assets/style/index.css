@@ -281,7 +281,10 @@ input[type="text"]:focus {
   visibility: hidden;
 }
 
-.overlay {
+.overlay-about,
+.overlay-coins,
+.overlay-gems,
+.overlay-menu {
   position: fixed;
   top: 0;
   left: 0;
@@ -300,7 +303,10 @@ input[type="text"]:focus {
   transition: all 0.2s ease-in-out;
 }
 
-.overlay.visible {
+.overlay-about.visible,
+.overlay-coins.visible,
+.overlay-gems.visible,
+.overlay-menu.visible {
   visibility: visible;
   opacity: 1;
 }
@@ -366,4 +372,12 @@ input[type="text"]:focus {
   justify-content: center;
   align-items: center;
   gap: 1rem;
+}
+
+.stats div {
+  height: 2rem;
+}
+
+.game-form div {
+  height: 2rem;
 }

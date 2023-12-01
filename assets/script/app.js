@@ -138,7 +138,7 @@ const words = [
 ];
 
 const gameForm = select("#game-form");
-const buttonSettings = select(".header-menu-btn-1");
+const buttonAbout = select(".header-menu-btn-1");
 const buttonCoins = select(".header-menu-btn-2");
 const buttonGems = select(".header-menu-btn-3");
 const buttonMenu = select(".header-menu-btn-4");
@@ -147,8 +147,13 @@ const buttonReset = select(".game-reset-btn");
 const inputWord = select(".game-input");
 const randomWordDisplay = select(".random-word-display");
 const gameTimer = select(".game-timer");
-const overlay = select(".overlay");
-const overlayCloseBtn = select(".overlay-content-close-btn");
+
+// Overlay
+const overlayAbout = select(".overlay-about");
+const overlayCoins = select(".overlay-coins");
+const overlayGems = select(".overlay-gems");
+const overlayMenu = select(".overlay-menu");
+const overlayCloseBtns = selectAll(".overlay-content-close-btn");
 
 const gameWords = select(".game-words");
 const gamePercentage = select(".game-percentage");
@@ -223,20 +228,6 @@ function startTimer() {
 
 /* 
 !-------------------------------------------------------------------------------
-! Game Overlay
-!-------------------------------------------------------------------------------
-*/
-
-function showOverlay() {
-  overlay.classList.add("visible");
-}
-
-function hideOverlay() {
-  overlay.classList.remove("visible");
-}
-
-/* 
-!-------------------------------------------------------------------------------
 ! Game Sounds
 !-------------------------------------------------------------------------------
 */
@@ -307,37 +298,83 @@ function compareWords() {
 
 /* 
 !-------------------------------------------------------------------------------
-! Event Listeners
+! Buttons
 !-------------------------------------------------------------------------------
 */
 
-// Settings button
-onEvent("click", buttonSettings, () => {
+// * About button and overlay
+function showOverlayAbout() {
+  overlayAbout.classList.add("visible");
+}
+
+function hideOverlayAbout() {
+  overlayAbout.classList.remove("visible");
+}
+
+onEvent("click", buttonAbout, () => {
   playButtonSound();
-  showOverlay();
+  showOverlayAbout();
 });
+
+// * Coins button and overlay
+
+function showOverlayCoins() {
+  overlayCoins.classList.add("visible");
+}
+
+function hideOverlayCoins() {
+  overlayCoins.classList.remove("visible");
+}
 
 // Coins button
 onEvent("click", buttonCoins, () => {
   playButtonSound();
-  showOverlay();
+  showOverlayCoins();
 });
 
-// Gems button
+// * Gems button and overlay
+
+function showOverlayGems() {
+  overlayGems.classList.add("visible");
+}
+
+function hideOverlayGems() {
+  overlayGems.classList.remove("visible");
+}
+
 onEvent("click", buttonGems, () => {
   playButtonSound();
-  showOverlay();
+  showOverlayGems();
 });
 
-// Menu button
+// * Menu button and overlay
+
+function showOverlayMenu() {
+  overlayMenu.classList.add("visible");
+}
+
+function hideOverlayMenu() {
+  overlayMenu.classList.remove("visible");
+}
+
 onEvent("click", buttonMenu, () => {
   playButtonSound();
-  showOverlay();
+  showOverlayMenu();
+});
+
+overlayCloseBtns.forEach((btn) => {
+  onEvent("click", btn, () => {
+    playButtonSound();
+    hideOverlayAbout();
+    hideOverlayCoins();
+    hideOverlayGems();
+    hideOverlayMenu();
+  });
 });
 
 // Start button
 onEvent("click", buttonStart, () => {
-  gameDateScore.textContent = "--";
+  gameDateScore.textContent = "";
   gameWords.textContent = "0";
   gamePercentage.textContent = "0";
   inputWord.style.display = "block";
@@ -355,11 +392,6 @@ onEvent("click", buttonReset, () => {
   buttonReset.classList.add("hidden");
   gameTimer.style.visibility = "hidden";
   playButtonSound();
-});
-
-onEvent("click", overlayCloseBtn, () => {
-  playButtonSound();
-  hideOverlay();
 });
 
 onEvent("click", buttonStart, () => {

@@ -33,13 +33,44 @@
 </head>
 
 <body>
-	<div class="overlay">
+
+	<div class="overlay-about">
 		<div class="overlay-content">
 			<div class="overlay-content-close-btn">X</div>
-			<div class="overlay-content-title">Fast Typing Game</div>
+			<div class="overlay-content-title">About</div>
 			<div class="overlay-content-text">
 				Type Runner is a fast typing game where you have to type the words that
 				appear on the screen as fast as you can.
+			</div>
+		</div>
+	</div>
+
+	<div class="overlay-coins">
+		<div class="overlay-content">
+			<div class="overlay-content-close-btn">X</div>
+			<div class="overlay-content-title">Coins</div>
+			<div class="overlay-content-text">
+				You can buy coins with gems. You can use coins to buy skins.
+			</div>
+		</div>
+	</div>
+
+	<div class="overlay-gems">
+		<div class="overlay-content">
+			<div class="overlay-content-close-btn">X</div>
+			<div class="overlay-content-title">Gems</div>
+			<div class="overlay-content-text">
+				You can buy gems with real money. You can use gems to buy coins.
+			</div>
+		</div>
+	</div>
+
+	<div class="overlay-menu">
+		<div class="overlay-content">
+			<div class="overlay-content-close-btn">X</div>
+			<div class="overlay-content-title">Menu</div>
+			<div class="overlay-content-text">
+				Here you can find the menu. Customize your game.
 			</div>
 		</div>
 	</div>
@@ -48,7 +79,7 @@
 		<div class="container">
 
 			<div class="header-menu">
-				<div class="header-menu-btn-1">Settings</div>
+				<div class="header-menu-btn-1">About</div>
 				<div class="header-menu-btn-2">Coins</div>
 				<div class="header-menu-btn-3">Gems</div>
 				<div class="header-menu-btn-4">Menu</div>
@@ -61,14 +92,14 @@
 	<main>
 		<div class="container">
 			<form id="game-form">
-				<div class="game-timer">--</div>
+				<div class="game-timer"></div>
 				<div class="random-word-display">Type Runner</div>
 				<input class="game-input" type="text" name="words" id="words" placeholder="Words">
 				<input class="game-start-btn" type="button" value="Start">
 				<input class="game-reset-btn hidden" type="button" value="Reset">
 			</form>
 			<div class="stats">
-				<div>Date: <span class="game-date-score">0</span></div>
+				<div><span class="game-date-score"></span></div>
 				<div>Words: <span class="game-words">0</span></div>
 				<div>Percentage: <span class="game-percentage">0</span>%</div>
 			</div>

@@ -287,7 +287,17 @@ overlayCloseBtns.forEach((btn) => {
 
 onEvent("click", buttonReset, () => {
   buttonSound.play();
+  resetGame();
+  gameTimer.textContent = seconds;
 });
+
+function resetGame() {
+  stopBackgroundMusic();
+  endingSound.play();
+  clearInterval(timer);
+  finalizeGame();
+  resetGameValues();
+}
 
 function startGame() {
   backgroundMusic.play();
@@ -308,8 +318,10 @@ function initializeGameDisplay() {
   inputWord.style.opacity = "1";
 }
 
+let timer;
+
 function startTimer() {
-  const timer = setInterval(() => {
+  timer = setInterval(() => {
     updateGameTimer();
 
     if (seconds === 0) {

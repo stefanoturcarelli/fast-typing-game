@@ -14,17 +14,6 @@ import {
 
 import Score from "./Score.js";
 
-// ! Requirements:
-// Players have 99 seconds to enter as many words as possible
-// (in an input field).
-// Game randomizes the words
-// Game displays a new word as soon as the player enter the previous one.
-// Players can't go to the next word unless they get the current word right.
-// Game displays the remaining seconds and the number of hits/points.
-// Web page plays a background music when the game starts
-
-// Game contains 120 words (see the array below).
-
 const words = [
   "dinosaur",
   "love",
@@ -163,27 +152,83 @@ const overlayCloseBtn = select(".overlay-content-close-btn");
 
 const backgroundMusic = new Audio("./assets/media/sound/music.mp3");
 
-// Create a Score object when the timer reaches 0
-let hits = 0;
-let percentage = 0;
+const game = {
+  words: words,
+  usedWords: [],
+  seconds: 5,
+  points: 0,
+  percentage: 0,
+  currentWord: "",
+  currentWordIndex: 0,
+  isGameStarted: false,
+  isGameFinished: false,
+  isGamePaused: false,
+  isGameReset: false,
+  isGameMuted: false,
+  isGameMusicMuted: false,
+  isGameSoundMuted: false,
+};
 
-// Game timer
+/* 
+!-------------------------------------------------------------------------------
+! Game Timer
+!-------------------------------------------------------------------------------
+*/
+
 function startTimer() {
   const timer = setInterval(() => {
+    // Keydown event
     game.seconds--;
     gameTimer.textContent = game.seconds;
     if (game.seconds === 0) {
-      // Pause the music when the timer reaches 0
+      inputWord.value = "";
       stopMusic();
+      playEndingsound();
       let date = new Date();
-      const score = new Score(date, hits, percentage);
+      // Date options for the score
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+      date = date.toLocaleDateString("en-US", options);
+      game.percentage = Math.round((game.points / game.words.length) * 100);
+
+      const score = new Score(date, game.points, game.percentage);
       print(`score: ${score.getScore()}`);
+      randomWordDisplay.textContent = `${score.getScore()}`;
       clearInterval(timer);
       game.isGameFinished = true;
-      playEndingsound();
+      inputWord.style.visibility = "hidden";
+      buttonStart.classList.remove("hidden");
+      buttonReset.classList.add("hidden");
+      gameTimer.style.visibility = "hidden";
+      game.isGameFinished = true;
+      document.removeEventListener("keydown", playKeySound);
     }
   }, 1000);
 }
+
+/* 
+!-------------------------------------------------------------------------------
+! Game Overlay
+!-------------------------------------------------------------------------------
+*/
+
+function showOverlay() {
+  overlay.classList.add("visible");
+}
+
+function hideOverlay() {
+  overlay.classList.remove("visible");
+}
+
+/* 
+!-------------------------------------------------------------------------------
+! Game Sounds
+!-------------------------------------------------------------------------------
+*/
 
 function playButtonSound() {
   const audio = new Audio("./assets/media/sound/button.mp3");
@@ -210,57 +255,16 @@ function playEndingsound() {
   audio.play();
 }
 
-onEvent("click", buttonSettings, () => {
-  playButtonSound();
-  showOverlay();
-});
+/* 
+!-------------------------------------------------------------------------------
+! Game Logic
+!-------------------------------------------------------------------------------
+*/
 
-onEvent("click", buttonCoins, playButtonSound);
-onEvent("click", buttonGems, playButtonSound);
-onEvent("click", buttonMenu, playButtonSound);
-onEvent("click", buttonStart, () => {
-  playButtonSound();
-  playMusic();
-  startTimer();
-});
-onEvent("click", buttonReset, () => {
-  inputWord.value = "";
-  inputWord.style.visibility = "hidden";
-  buttonStart.classList.remove("hidden");
-  buttonReset.classList.add("hidden");
-  gameTimer.style.visibility = "hidden";
-  playButtonSound();
-});
-
-onEvent("click", overlayCloseBtn, () => {
-  playButtonSound();
-  hideOverlay();
-});
-
-onEvent("keydown", document, playKeySound);
-
-const game = {
-  words: words,
-  usedWords: [],
-  seconds: 30,
-  points: 0,
-  currentWord: "",
-  currentWordIndex: 0,
-  isGameStarted: false,
-  isGameFinished: false,
-  isGamePaused: false,
-  isGameReset: false,
-  isGameMuted: false,
-  isGameMusicMuted: false,
-  isGameSoundMuted: false,
-};
-
-function startGame() {}
-
-function grabWordFromInput() {
-  const word = inputWord.value.trim().toLowerCase();
-  inputWord.value = "";
-  return word;
+function printRandomWordFromArray() {
+  const randomWord = getRandomWord();
+  randomWordDisplay.textContent = randomWord;
+  return randomWord;
 }
 
 function getRandomWord() {
@@ -279,11 +283,69 @@ function getRandomWord() {
   return randomWord;
 }
 
-function printRandomWordFromArray() {
-  const randomWord = getRandomWord();
-  randomWordDisplay.textContent = randomWord;
-  return randomWord;
+function compareWords() {
+  const typedWord = inputWord.value.trim().toLowerCase();
+
+  if (typedWord === game.currentWord.toLowerCase()) {
+    game.points++;
+    inputWord.value = "";
+    game.currentWord = printRandomWordFromArray();
+    game.currentWordIndex = game.words.indexOf(game.currentWord);
+  }
 }
+
+/* 
+!-------------------------------------------------------------------------------
+! Event Listeners
+!-------------------------------------------------------------------------------
+*/
+
+// Settings button
+onEvent("click", buttonSettings, () => {
+  playButtonSound();
+  showOverlay();
+});
+
+// Coins button
+onEvent("click", buttonCoins, () => {
+  playButtonSound();
+  showOverlay();
+});
+
+// Gems button
+onEvent("click", buttonGems, () => {
+  playButtonSound();
+  showOverlay();
+});
+
+// Menu button
+onEvent("click", buttonMenu, () => {
+  playButtonSound();
+  showOverlay();
+});
+
+// Start button
+onEvent("click", buttonStart, () => {
+  onEvent("keydown", document, playKeySound);
+  playButtonSound();
+  playMusic();
+  startTimer();
+});
+
+// Reset button
+onEvent("click", buttonReset, () => {
+  inputWord.value = "";
+  inputWord.style.visibility = "hidden";
+  buttonStart.classList.remove("hidden");
+  buttonReset.classList.add("hidden");
+  gameTimer.style.visibility = "hidden";
+  playButtonSound();
+});
+
+onEvent("click", overlayCloseBtn, () => {
+  playButtonSound();
+  hideOverlay();
+});
 
 onEvent("click", buttonStart, () => {
   // Focus on the input field
@@ -299,38 +361,20 @@ onEvent("click", buttonStart, () => {
   buttonReset.classList.remove("hidden");
   // Show timer
   gameTimer.style.visibility = "visible";
-  // Show input
-  // inputWord.style.visibility = "visible";
 });
 
 onEvent("input", inputWord, () => {
-  const typedWord = inputWord.value.trim().toLowerCase();
-
-  if (typedWord === game.currentWord.toLowerCase()) {
-    hits++;
-    game.points++;
-    inputWord.value = ""; // Clear the input field
-    game.currentWord = printRandomWordFromArray();
-    game.currentWordIndex = game.words.indexOf(game.currentWord);
-  }
+  compareWords();
 });
 
-function showOverlay() {
-  overlay.classList.add("visible");
-}
-
-function hideOverlay() {
-  overlay.classList.remove("visible");
-}
-
+// Form submission
+// Prevent the default form submission behavior
 onEvent("submit", gameForm, (event) => {
-  // Prevent the default form submission behavior
   event.preventDefault();
 
   const typedWord = inputWord.value.trim().toLowerCase();
 
   if (typedWord === game.currentWord.toLowerCase()) {
-    hits++;
     game.points++;
     inputWord.value = ""; // Clear the input field
     game.currentWord = printRandomWordFromArray();

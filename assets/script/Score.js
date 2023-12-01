@@ -27,9 +27,11 @@ class Score {
     return this.#percentage;
   }
 
-	getScore() {
-		return `${this.#date} - ${this.#hits} - ${this.#percentage}`;
-	}
+  getScore() {
+    return `${this.#date} - Score: ${this.#hits} - Percentage: ${
+      this.#percentage
+    }%`;
+  }
 }
 
 export default Score;

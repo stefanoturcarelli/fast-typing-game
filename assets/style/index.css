@@ -456,3 +456,7 @@ input[type="text"]:focus {
   transform: scale(0.9);
   background-color: #ff6b6b;
 }
+
+.selected {
+  background-color: #ff6b6b;
+}

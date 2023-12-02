@@ -164,7 +164,9 @@ const gameWords = select(".game-words");
 const gamePercentage = select(".game-percentage");
 const gameDateScore = select(".game-date-score");
 
-let seconds = 30;
+let seconds = 99;
+// let selectedTime = 99;
+
 let points = 0;
 let percentage = 0;
 let currentWord = "";
@@ -293,11 +295,23 @@ overlayCloseBtns.forEach((btn) => {
 
 // * Select time buttons
 
+let selectedSeconds = 99;
+
 selectTimeBtns.forEach((btn) => {
   onEvent("click", btn, () => {
     buttonSound.play();
-    seconds = btn.dataset.time;
-    gameTimer.textContent = seconds;
+    selectedSeconds = btn.dataset.time;
+    gameTimer.textContent = selectedSeconds;
+  });
+});
+
+// Paint the time button the user selected
+selectTimeBtns.forEach((btn) => {
+  onEvent("click", btn, () => {
+    selectTimeBtns.forEach((btn) => {
+      btn.classList.remove("selected");
+    });
+    btn.classList.add("selected");
   });
 });
 
@@ -354,6 +368,7 @@ function updateGameTimer() {
 }
 
 onEvent("click", buttonStart, () => {
+  seconds = selectedSeconds;
   inputWord.focus();
   buttonSound.play();
   startGame();
@@ -416,7 +431,7 @@ function finalizeGame() {
 }
 
 function resetGameValues() {
-  seconds = 30;
+  seconds = selectedSeconds;
   points = 0;
   percentage = 0;
   inputWord.value = "";

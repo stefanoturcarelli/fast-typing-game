@@ -411,3 +411,48 @@ input[type="text"]:focus {
 .game-reset-btn:active {
   transform: scale(0.9);
 }
+
+.select-time-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.select-time-title {
+  font-family: "Lilita One", sans-serif;
+  font-size: 3rem;
+  text-align: center;
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.select-time-btn-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.select-time-btn {
+  font-family: "Lilita One", sans-serif;
+  background-color: var(--accent-color);
+  color: var(--font-color-1);
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  transition: all 0.2s ease-in-out;
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  font-size: 2rem;
+}
+
+.select-time-btn:hover {
+  transform: scale(1.1);
+}
+
+.select-time-btn:active {
+  transform: scale(0.9);
+  background-color: #ff6b6b;
+}

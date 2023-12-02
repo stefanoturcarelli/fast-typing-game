@@ -151,6 +151,7 @@ const randomWordDisplay = select(".random-word-display");
 const gameTimer = select(".game-timer");
 const scoresArrayDisplay = select(".scores-array-container");
 const statsDisplay = select(".stats");
+const selectTimeBtns = selectAll(".select-time-btn");
 
 // Overlay
 const overlayAbout = select(".overlay-about");
@@ -174,7 +175,6 @@ const scoresArray = [];
 const backgroundMusic = new Audio("./assets/media/sound/music.mp3");
 const endingSound = new Audio("./assets/media/sound/ending.mp3");
 const buttonSound = new Audio("./assets/media/sound/button.mp3");
-const keySound = new Audio("./assets/media/sound/key.mp3");
 
 backgroundMusic.volume = 0.1;
 endingSound.volume = 0.4;
@@ -291,7 +291,18 @@ overlayCloseBtns.forEach((btn) => {
   });
 });
 
+// * Select time buttons
+
+selectTimeBtns.forEach((btn) => {
+  onEvent("click", btn, () => {
+    buttonSound.play();
+    seconds = btn.dataset.time;
+    gameTimer.textContent = seconds;
+  });
+});
+
 onEvent("click", buttonReset, () => {
+  inputWord.value = "";
   buttonSound.play();
   resetGame();
   gameTimer.textContent = seconds;
@@ -306,6 +317,7 @@ function resetGame() {
 }
 
 function startGame() {
+  inputWord.value = "";
   backgroundMusic.play();
   initializeGameDisplay();
   onEvent("keydown", document, playKeySound);
@@ -349,12 +361,11 @@ onEvent("click", buttonStart, () => {
 });
 
 function endGame(timer) {
-  inputWord.value = "";
-  stopBackgroundMusic();
-  endingSound.play();
-
   const timeString = getCurrentTimeString();
   updateGameScore(timeString);
+
+  stopBackgroundMusic();
+  endingSound.play();
 
   clearInterval(timer);
   finalizeGame();
@@ -373,9 +384,12 @@ function getCurrentTimeString() {
 function updateGameScore(timeString) {
   percentage = Math.round((points / wordsArray.length) * 100);
   const score = new Score(timeString, points, percentage);
+
   gameDateScore.textContent = score.getScore().split(",")[0];
   gameWords.textContent = score.getScore().split(",")[1];
   gamePercentage.textContent = score.getScore().split(",")[2];
+
+  // Send score to the scores overlay
   scoresArray.push(score);
   printScoresArray();
 }

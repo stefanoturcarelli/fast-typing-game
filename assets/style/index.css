@@ -283,7 +283,7 @@ input[type="text"]:focus {
 
 .overlay-about,
 .overlay-coins,
-.overlay-gems,
+.overlay-scores,
 .overlay-menu {
   position: fixed;
   top: 0;
@@ -305,7 +305,7 @@ input[type="text"]:focus {
 
 .overlay-about.visible,
 .overlay-coins.visible,
-.overlay-gems.visible,
+.overlay-scores.visible,
 .overlay-menu.visible {
   visibility: visible;
   opacity: 1;
@@ -317,10 +317,6 @@ input[type="text"]:focus {
   border-radius: 1rem;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
   position: relative;
-  width: 100%;
-  max-width: 600px;
-  height: 100%;
-  max-height: 600px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -429,10 +425,10 @@ input[type="text"]:focus {
 
 .select-time-btn-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
+  margin-bottom: 4rem;
 }
 
 .select-time-btn {

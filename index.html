@@ -33,104 +33,56 @@
 </head>
 
 <body>
-
-	<div class="overlay-about">
-		<div class="overlay-content">
-			<div class="overlay-content-close-btn button">X</div>
-			<div class="overlay-content-title">About</div>
-			<div class="overlay-content-text">
-				Type Runner is a fast typing game where you have to type the words that
-				appear on the screen as fast as you can.
-				Each word you type correctly will give you 1 point. The percentage
-				indicates how many words you typed correctly out of a total of 120 words.
-			</div>
-		</div>
-	</div>
-
-	<div class="overlay-coins">
-		<div class="overlay-content">
-			<div class="overlay-content-close-btn button">X</div>
-			<div class="overlay-content-title">Coins</div>
-			<div class="overlay-content-text">
-				Here you will find your coins. Stay tuned for the upcoming shop.
-			</div>
-		</div>
-	</div>
-
-	<div class="overlay-scores">
-		<div class="overlay-content">
-			<div class="overlay-content-close-btn button">X</div>
-			<div class="overlay-content-title">Scores</div>
-			<div class="overlay-content-text">
-				Here you will find your scores.
-			</div>
-			<div class="scores-array-container">
-			</div>
-		</div>
-	</div>
-
-	<div class="overlay-menu">
-		<div class="overlay-content">
-			<div class="overlay-content-close-btn button">X</div>
-			<div class="overlay-content-title"></div>
-			<div class="overlay-content-text">
-				<!-- Here you will find menu options. -->
-			</div>
-			<div class="select-time-container">
-				<div class="select-time-title">Select Time</div>
-				<div class="select-time-btn-container">
-					<div class="select-time-btn button" data-time="30">30</div>
-					<div class="select-time-btn button" data-time="60">60</div>
-					<div class="select-time-btn button" data-time="99">99</div>
-					<div class="select-time-btn button" data-time="120">120</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<header>
-		<div class="container">
-
-			<div class="header-menu">
-				<div class="header-menu-btn-1 button">About</div>
-				<div class="header-menu-btn-2 button">Coins</div>
-				<div class="header-menu-btn-3 button">Scores</div>
-				<div class="header-menu-btn-4 button">Settings</div>
-			</div>
-
-		</div>
-
-	</header>
-
 	<main>
+		<div class="overlay"></div>
 		<div class="container">
-			<form id="game-form">
-				<div class="game-timer">--</div>
-				<div class="random-word-display">Type Runner</div>
-				<input class="game-input" type="text" name="words" id="words" placeholder="Words">
-				<input class="game-start-btn button" type="button" value="Start">
-				<input class="game-reset-btn button hidden" type="button" value="Reset">
-			</form>
-			<div class="stats">
-				<div><span class="game-date-score"></span></div>
-				<div>Words: <span class="game-words">0</span></div>
-				<div>Percentage: <span class="game-percentage">0</span>%</div>
+
+			<div class="reset-btn">
+				<i class="fa-solid fa-arrow-rotate-left"></i>
 			</div>
+
+			<div class="data-container">
+				<div class="data">
+					<i class="fa-solid fa-star"></i>
+					<div class="data-value">00</div>
+				</div>
+
+				<div class="data">
+					<i class="fa-solid fa-percent"></i>
+					<div class="data-value">00</div>
+				</div>
+
+				<div class="data">
+					<i class="fas fa-stopwatch"></i>
+					<div class="data-value"></div>
+				</div>
+
+			</div>
+
+			<div class="message-container">
+				<h1>Type Runner</h1>
+				<p> <span class="strong">Type Runner</span> is a fast typing game where
+					you have to type the words that appear on the screen as fast as
+					you can.
+					Each word you type correctly will give you 1 point.
+					The percentage indicates how many words you typed correctly out
+					of a total of 120 words.
+				</p>
+				<button class="continue-btn">Continue</button>
+			</div>
+
+			<div class="game-container">
+				<div class="word-container">
+					<div class="word">Get ready</div>
+				</div>
+				<input type="text" class="input" placeholder="Type the word here...">
+			</div>
+
 		</div>
 	</main>
 
-	<footer>
-
-		<div class="container">
-			<div class="footer-information">
-				<p>A fast typing game created by <a href="https://stefanoturcarelli.com/" target="_blank">Stefano Turcarelli</a>
-				</p>
-			</div>
-		</div>
-
-	</footer>
-
 </body>
+
 <noscript>
 	<p>This website needs a JavaScript browser</p>
 </noscript>

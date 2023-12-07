@@ -120,339 +120,194 @@ a {
 /* !                                 CONTENT                                  */
 /* ! ------------------------------------------------------------------------ */
 
-:root {
-  --accent-color: #ffa56a;
-  --font-color-1: #fdfac5;
-  --border-color-1: #fdfac5;
-}
-
 body {
   height: 100dvh;
-  background-color: var(--font-color-1);
+  color: #b1862f;
+  background-color: #ffeaea;
   background-image: url("../media/img/wallpaper.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  font-family: "Lilita One", Arial, Helvetica, sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.2rem;
+  text-align: center;
 }
 
-main {
-  min-height: 70dvh;
+button {
+  font-family: "Lilita One", Arial, Helvetica, sans-serif;
+  font-size: 2rem;
+  text-align: center;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, #89ea16, #228c0c);
+  border: 0.2rem solid #f0e9b5;
+  color: #fdfefb;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  background: linear-gradient(180deg, #89ea16, #228c0c 50%);
+  border: 0.2rem solid #f0e9b5;
+  color: #fdfefb;
+}
+
+.data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  padding-top: 3rem;
+}
+
+.data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.fa-stopwatch,
+.fa-percent,
+.fa-star {
+  font-size: 5rem;
+  color: #1586f8;
+}
+
+.data-value {
+  font-size: 4.5rem;
+  font-weight: 700;
+  font-family: "Lilita One", Arial, Helvetica, sans-serif;
+  color: #1586f8;
+}
+
+.message-container {
+  min-width: 350px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  padding: 2rem 0;
-}
-
-.header-menu {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2rem 0;
-}
-
-.header-menu-btn-1,
-.header-menu-btn-2,
-.header-menu-btn-3,
-.header-menu-btn-4 {
-  font-family: "Lilita One", sans-serif;
-  background-color: var(--accent-color);
-  color: var(--font-color-1);
-  cursor: pointer;
-  padding: 0.5rem 1rem;
+  background: linear-gradient(180deg, #fff7d4 97%, #f0e9b5);
+  color: #b1862f;
+  font-weight: 600;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  letter-spacing: 0.1rem;
+  padding: 1.8rem 2rem 3.5rem 2rem;
   border-radius: 1rem;
-  transition: all 0.2s ease-in-out;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+  animation: message 0.2s ease-in-out;
+  z-index: 1000;
 }
 
-.header-menu-btn-1:hover,
-.header-menu-btn-2:hover,
-.header-menu-btn-3:hover,
-.header-menu-btn-4:hover {
-  transform: scale(1.1);
+.message-container h1 {
+  font-size: 7rem;
+  font-weight: 700;
+  color: #1586f8;
+  font-family: "Lilita One", Arial, Helvetica, sans-serif;
+  margin-bottom: -1rem;
 }
 
-.header-menu-btn-1:active,
-.header-menu-btn-2:active,
-.header-menu-btn-3:active,
-.header-menu-btn-4:active {
-  transform: scale(0.9);
+.message-container button {
+  margin-top: 2rem;
+  letter-spacing: 0.3rem;
+  font-size: 2.5rem;
 }
 
-.header-menu-btn-1 {
-  background-color: #ff6b6b;
+@keyframes message {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
-.header-menu-btn-2 {
-  background-color: #48dbfb;
+.strong {
+  font-weight: 700;
 }
 
-.header-menu-btn-3 {
-  background-color: #1dd1a1;
-}
-
-.header-menu-btn-4 {
-  background-color: #feca57;
-}
-
-.header-menu-btn-1,
-.header-menu-btn-2,
-.header-menu-btn-3,
-.header-menu-btn-4 {
-  font-size: 2rem;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-input[type="button"] {
-  font-family: "Lilita One", sans-serif;
-  background-color: var(--accent-color);
-  color: var(--font-color-1);
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 1rem;
-  transition: all 0.2s ease-in-out;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-}
-
-input[type="button"]:hover {
-  transform: scale(1.1);
-}
-
-input[type="button"]:active {
-  transform: scale(0.9);
-}
-
-input[type="text"] {
-  padding: 0.5rem 1rem;
-  border-radius: 1rem;
-  border: 1px solid black;
-  outline: none;
-  text-align: center;
-  font-size: 2rem;
-  font-family: "Lilita One", sans-serif;
-  transition: all 0.2s ease-in-out;
-  opacity: 0;
-}
-
-input[type="text"]:focus {
-  border: 1px solid var(--accent-color);
-}
-
-.footer-information {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  padding: 2rem 0;
-}
-
-.random-word-display {
-  font-family: "Lilita One", sans-serif;
-  font-size: 10rem;
-  text-align: center;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-}
-
-.visible {
-  display: block;
-}
-
-.hidden {
+.hide {
   display: none;
 }
 
-.game-timer {
-  font-family: "Lilita One", sans-serif;
-  font-size: 5rem;
-  text-align: center;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  visibility: hidden;
-}
-
-.overlay-about,
-.overlay-coins,
-.overlay-scores,
-.overlay-menu {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
-  width: 100dvw;
-  height: 100dvh;
-  background-color: rgba(191, 24, 24, 0.7);
-  backdrop-filter: blur(0.5rem);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  padding: 2rem;
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.2s ease-in-out;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(2px);
 }
 
-.overlay-about.visible,
-.overlay-coins.visible,
-.overlay-scores.visible,
-.overlay-menu.visible {
-  visibility: visible;
-  opacity: 1;
-}
-
-.overlay-content {
-  background-color: var(--font-color-1);
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-}
-
-.overlay-content-close-btn {
-  font-family: "Lilita One", sans-serif;
-  background-color: var(--accent-color);
-  color: var(--font-color-1);
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 1rem;
-  transition: all 0.2s ease-in-out;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-}
-
-.overlay-content-close-btn:hover {
-  transform: scale(1.005);
-}
-
-.overlay-content-close-btn:active {
-  transform: scale(0.99);
-}
-
-.overlay-content-title {
-  font-family: "Lilita One", sans-serif;
-  font-size: 3rem;
-  text-align: center;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-}
-
-.overlay-content-text {
+.reset-btn {
   font-size: 2rem;
-  text-align: center;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+  color: #fdfefb;
+  background: linear-gradient(180deg, #89ea16, #228c0c);
+  border: 0.2rem solid #f0e9b5;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  max-width: 50px;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
 }
 
-.stats {
-  margin-top: 2rem;
+.reset-btn:hover {
+  background: linear-gradient(180deg, #89ea16, #228c0c 50%);
+  border: 0.2rem solid #f0e9b5;
+  color: #fdfefb;
+}
+
+.game-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding-top: 3rem;
+}
+
+.word-container {
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  opacity: 0;
-}
-
-.stats div {
-  height: 2rem;
-  font-size: 2rem;
-  font-family: "Lilita One", sans-serif;
-  text-align: center;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-}
-
-.game-form div {
-  height: 2rem;
-}
-
-.game-start-btn,
-.game-reset-btn {
-  margin: 2rem 0;
-  font-family: "Lilita One", sans-serif;
-  background-color: var(--accent-color);
-  color: var(--font-color-1);
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 1rem;
-  transition: all 0.2s ease-in-out;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  font-size: 4rem;
-}
-
-.game-start-btn:hover,
-.game-reset-btn:hover {
-  transform: scale(1.1);
-}
-
-.game-start-btn:active,
-.game-reset-btn:active {
-  transform: scale(0.9);
-}
-
-.select-time-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-.select-time-title {
-  font-family: "Lilita One", sans-serif;
   font-size: 3rem;
-  text-align: center;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  font-weight: 700;
 }
 
-.select-time-btn-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  margin-bottom: 4rem;
+.word {
+  font-size: 6rem;
+  font-weight: 700;
+  font-family: "Lilita One", Arial, Helvetica, sans-serif;
+  color: #1586f8;
 }
 
-.select-time-btn {
-  font-family: "Lilita One", sans-serif;
-  background-color: var(--accent-color);
-  color: var(--font-color-1);
-  cursor: pointer;
-  padding: 0.5rem 1rem;
+.input {
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: "Lilita One", Arial, Helvetica, sans-serif;
+  color: #1586f8;
+  border: 0.2rem solid #1586f8;
   border-radius: 1rem;
-  transition: all 0.2s ease-in-out;
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  font-size: 2rem;
-}
-
-.select-time-btn:hover {
-  transform: scale(1.1);
-}
-
-.select-time-btn:active {
-  transform: scale(0.9);
-  background-color: #ff6b6b;
-}
-
-.selected {
-  background-color: #ff6b6b;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  outline: none;
 }

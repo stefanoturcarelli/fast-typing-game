@@ -49,10 +49,6 @@ let percentage = 0;
 
 const scoreArray = [];
 
-// ! ---------------------------------------------------------------------------
-// ! Game mechanics
-// ! ---------------------------------------------------------------------------
-
 dataValues[2].textContent = time;
 const timerElement = dataValues[2];
 
@@ -127,10 +123,6 @@ function hideMessageWithOverlay() {
   overlay.classList.add("hide");
 }
 
-// ! ---------------------------------------------------------------------------
-// ! Word mechanics
-// ! ---------------------------------------------------------------------------
-
 function shuffleArray(array) {
   const shuffledArray = array.sort(() => Math.random() - 0.5);
   return shuffledArray;
@@ -196,6 +188,35 @@ function resetGameValues() {
   input.focus();
 }
 
+function showPastScores() {
+  scoreContainer.style.display = "block";
+  messageContainer.style.display = "none";
+
+  scoreList.innerHTML = "";
+
+  scoreArray.forEach((score) => {
+    const paragraph = create("p");
+    paragraph.innerHTML = `#${
+      scoreArray.indexOf(score) + 1
+    } Points: <span class="score-points">${
+      score.points
+    }</span> Date: <span class="score-date">${score.date}</span>`;
+    scoreList.appendChild(paragraph);
+  });
+
+  localStorage.getItem("scores");
+}
+
+function checkIfThereAreScores() {
+  if (localStorage.getItem("scores") !== null) {
+    pastScoresBtn.style.display = "block";
+    const scores = JSON.parse(localStorage.getItem("scores"));
+    scores.forEach((score) => {
+      scoreArray.push(score);
+    });
+  }
+}
+
 // ! ---------------------------------------------------------------------------
 // ! Event listeners
 // ! ---------------------------------------------------------------------------
@@ -222,22 +243,7 @@ onEvent("click", scoreBtn, () => {
 });
 
 onEvent("click", pastScoresBtn, () => {
-  scoreContainer.style.display = "block";
-  messageContainer.style.display = "none";
-
-  scoreList.innerHTML = "";
-
-  scoreArray.forEach((score) => {
-    const paragraph = create("p");
-    paragraph.innerHTML = `#${
-      scoreArray.indexOf(score) + 1
-    } Points: <span class="score-points">${
-      score.points
-    }</span> Date: <span class="score-date">${score.date}</span>`;
-    scoreList.appendChild(paragraph);
-  });
-
-  localStorage.getItem("scores");
+  showPastScores();
 });
 
 onEvent("input", input, () => {
@@ -245,11 +251,5 @@ onEvent("input", input, () => {
 });
 
 onEvent("load", window, () => {
-  if (localStorage.getItem("scores") !== null) {
-    pastScoresBtn.style.display = "block";
-    const scores = JSON.parse(localStorage.getItem("scores"));
-    scores.forEach((score) => {
-      scoreArray.push(score);
-    });
-  }
+  checkIfThereAreScores();
 });

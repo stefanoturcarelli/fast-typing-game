@@ -32,14 +32,22 @@ music.volume = 0.1;
 const endingSound = new Audio("./assets/media/sound/ending.mp3");
 endingSound.volume = 0.1;
 
-let points = 0;
-let totalWords = wordsArray.length;
-let percentage = 0;
-
 let time = 20;
+let timerInterval;
+let totalWords = wordsArray.length;
+
+let points = 0;
+let percentage = 0;
+let date = new Date();
+
+const scoreArray = [];
+
+// ! ---------------------------------------------------------------------------
+// ! Game mechanics
+// ! ---------------------------------------------------------------------------
+
 dataValues[2].textContent = time;
 const timerElement = dataValues[2];
-let timerInterval;
 
 function startTimer() {
   resetTimer();
@@ -54,6 +62,9 @@ function startTimer() {
       input.style.display = "none";
       word.style.display = "none";
       console.log("game over");
+
+      console.log(scoreArray);
+
       gameOverContainer.style.display = "block";
       // music.pause();
       endingSound.play();
@@ -95,16 +106,23 @@ function getRandomWordFromShuffledArray() {
 
 function checkWord() {
   const currentWord = word.textContent;
-  const inputValue = input.value;
+  const inputValue = input.value.toLowerCase().trim();
 
   if (currentWord === inputValue) {
     console.log("correct");
-    wordsArray.shift(currentWord);
-    console.log(wordsArray.length);
+    
+    usedWordsArray.push(currentWord); // This is to add the used words to the array
+    wordsArray.shift(currentWord); // This is to remove the used words from the array
+
+    // console.log(`Words Arra: ${wordsArray}`);
+    // console.log(`Used Words Array: ${usedWordsArray}`);
+    // console.log(`Words Array Length: ${wordsArray.length}`);
+    // console.log(`Used Words Array Length: ${usedWordsArray.length}`);
+
     points++;
     dataValues[0].textContent = points;
 
-    percentage = Math.floor((points / totalWords) * 100);
+    percentage = Math.round((points / totalWords) * 100, 2);
     dataValues[1].textContent = percentage;
 
     input.value = "";
@@ -128,8 +146,21 @@ onEvent("click", continueBtn, () => {
 restartBtn.forEach((btn) => {
   onEvent("click", btn, () => {
     console.log("reset");
+
+    wordsArray.push(...usedWordsArray); // This is to add the used words back to the array
+    usedWordsArray.splice(0, usedWordsArray.length); // This is to empty the array
+
+    // console.log(`Words Arra: ${wordsArray}`);
+    // console.log(`Used Words Array: ${usedWordsArray}`);
+    // console.log(`Words Array Length: ${wordsArray.length}`);
+    // console.log(`Used Words Array Length: ${usedWordsArray.length}`);
+
     if (gameOverContainer.style.display === "block") {
       gameOverContainer.style.display = "none";
+    }
+
+    if (resetBtn.style.display === "none") {
+      resetBtn.style.display = "block";
     }
 
     word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));

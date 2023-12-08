@@ -264,7 +264,7 @@ button:hover {
   transition: all 0.2s ease-in-out;
   max-width: 50px;
   position: fixed;
-  bottom: 2rem;
+  top: 2rem;
   right: 2rem;
 }
 

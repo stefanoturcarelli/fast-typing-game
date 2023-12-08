@@ -270,6 +270,13 @@ button:hover {
   right: 2rem;
 }
 
+@media (max-width: 768px) {
+  .reset-btn {
+    bottom: 2rem;
+    top: unset;
+  }
+}
+
 .score-btn-small {
   font-size: 2rem;
   font-weight: 700;

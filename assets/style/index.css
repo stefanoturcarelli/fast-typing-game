@@ -268,6 +268,23 @@ button:hover {
   right: 2rem;
 }
 
+.score-btn-small {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fdfefb;
+  background: linear-gradient(180deg, #89ea16, #228c0c);
+  border: 0.2rem solid #f0e9b5;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  max-width: 50px;
+  position: fixed;
+  top: 8rem;
+  right: 2rem;
+  display: none;
+}
+
 .reset-btn:hover {
   background: linear-gradient(180deg, #89ea16, #228c0c 50%);
   border: 0.2rem solid #f0e9b5;
@@ -394,7 +411,7 @@ button:hover {
   font-size: 2.5rem;
 }
 
-.scores {
+.scores-list {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -402,21 +419,9 @@ button:hover {
   gap: 1rem;
   font-size: 3rem;
   font-weight: 700;
-  width: 8rem;
 }
 
-.scores-value {
-  font-size: 4.5rem;
-  font-weight: 700;
-  font-family: "Lilita One", Arial, Helvetica, sans-serif;
-  color: #1586f8;
-}
-
-.scores-value span {
+.scores-list p {
   font-size: 2rem;
-  font-weight: 400;
-  font-family: "Inter", Arial, Helvetica, sans-serif;
   color: #b1862f;
 }
-
-

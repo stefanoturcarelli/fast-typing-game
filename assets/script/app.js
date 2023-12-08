@@ -19,6 +19,10 @@ import wordsArray from "./words.js";
 const overlay = select(".overlay");
 const messageContainer = select(".message-container");
 const gameOverContainer = select(".game-over-container");
+const scoreContainer = select(".scores-container");
+const scoreBtn = select(".scores-btn");
+const scoreBtnSmall = select(".score-btn-small");
+const scoreList = select(".scores-list");
 const continueBtn = select(".continue-btn");
 const resetBtn = select(".reset-btn");
 const restartBtn = selectAll(".restart-btn");
@@ -35,6 +39,8 @@ endingSound.volume = 0.1;
 let time = 20;
 let timerInterval;
 let totalWords = wordsArray.length;
+
+let count = 0;
 
 let points = 0;
 let percentage = 0;
@@ -58,16 +64,44 @@ function startTimer() {
     if (time >= 0) {
       timerElement.textContent = time--;
     } else {
+      console.log("game over");
       clearInterval(timerInterval);
+
       input.style.display = "none";
       word.style.display = "none";
-      console.log("game over");
+
+      let score = {
+        points: points,
+        percentage: percentage,
+        date: new Date().toLocaleString(),
+      };
+
+      scoreArray.push(score);
+
+      scoreArray.sort((a, b) => {
+        return b.points - a.points;
+      });
+
+      scoreList.innerHTML = "";
+
+      scoreArray.forEach((score) => {
+        const paragraph = create("p");
+        paragraph.innerHTML = `#${
+          scoreArray.indexOf(score) + 1
+        } Points: <span class="score-points">${
+          score.points
+        }</span> Date: <span class="score-date">${score.date}</span>`;
+        scoreList.appendChild(paragraph);
+      });
 
       console.log(scoreArray);
 
       gameOverContainer.style.display = "block";
+      scoreBtnSmall.style.display = "none";
+
       // music.pause();
       endingSound.play();
+
       if (gameOverContainer.style.display === "block") {
         resetBtn.style.display = "none";
       }
@@ -110,7 +144,7 @@ function checkWord() {
 
   if (currentWord === inputValue) {
     console.log("correct");
-    
+
     usedWordsArray.push(currentWord); // This is to add the used words to the array
     wordsArray.shift(currentWord); // This is to remove the used words from the array
 
@@ -157,10 +191,19 @@ restartBtn.forEach((btn) => {
 
     if (gameOverContainer.style.display === "block") {
       gameOverContainer.style.display = "none";
+      scoreBtnSmall.style.display = "none";
+    }
+
+    if (scoreContainer.style.display === "block") {
+      scoreContainer.style.display = "none";
     }
 
     if (resetBtn.style.display === "none") {
       resetBtn.style.display = "block";
+    }
+
+    if (scoreArray.length > 0) {
+      scoreBtnSmall.style.display = "block";
     }
 
     word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));
@@ -179,6 +222,11 @@ restartBtn.forEach((btn) => {
     input.style.display = "block";
     input.focus();
   });
+});
+
+onEvent("click", scoreBtn, () => {
+  scoreContainer.style.display = "block";
+  gameOverContainer.style.display = "none";
 });
 
 onEvent("input", input, () => {

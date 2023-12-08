@@ -17,6 +17,7 @@ const continueBtn = select(".continue-btn");
 const resetBtn = select(".reset-btn");
 const restartBtn = selectAll(".restart-btn");
 const dataValues = selectAll(".data-value");
+const dataGameOverValues = selectAll(".data");
 const input = select(".input");
 
 const word = select(".word");
@@ -106,9 +107,11 @@ function gameOverFunctionality() {
   input.style.display = "none";
   word.style.display = "none";
   gameOverContainer.style.display = "block";
+  overlay.style.display = "block";
   music.pause();
   endingSound.play();
   generateScore();
+  applyStyleToGameOverDataValue();
 }
 
 function startTimer() {
@@ -242,6 +245,18 @@ function checkIfThereAreScores() {
   }
 }
 
+function applyStyleToGameOverDataValue() {
+  dataGameOverValues.forEach((value) => {
+    value.classList.add("data-game-over-style");
+  });
+}
+
+function removeStyleFromGameOverDataValue() {
+  dataGameOverValues.forEach((value) => {
+    value.classList.remove("data-game-over-style");
+  });
+}
+
 // ! ---------------------------------------------------------------------------
 // ! Event listeners
 // ! ---------------------------------------------------------------------------
@@ -253,12 +268,14 @@ onEvent("click", continueBtn, () => {
   music.play();
   hideMessageWithOverlay();
   startTimer();
+  removeStyleFromGameOverDataValue();
 });
 
 restartBtn.forEach((btn) => {
   onEvent("click", btn, () => {
     startTimer();
     resetGameValues();
+    removeStyleFromGameOverDataValue();
   });
 });
 

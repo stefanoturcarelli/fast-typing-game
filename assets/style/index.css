@@ -158,7 +158,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4rem;
+  gap: 2rem;
   padding-top: 3rem;
 }
 
@@ -168,9 +168,20 @@ button:hover {
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
   font-size: 3rem;
   font-weight: 700;
-  width: 8rem;
+  width: 15rem;
+  z-index: 1000;
+  transition: all 0.2s ease-in-out;
+}
+
+.data-game-over-style {
+  background-color: #fff7d4;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .fa-stopwatch,
@@ -251,7 +262,7 @@ button:hover {
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(2px);
+  /* backdrop-filter: blur(2px); */
 }
 
 .reset-btn {
@@ -306,7 +317,7 @@ button:hover {
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  padding-top: 3rem;
+  padding-top: 10rem;
 }
 
 .word-container {

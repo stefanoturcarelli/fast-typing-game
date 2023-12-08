@@ -207,7 +207,7 @@ button:hover {
   border-radius: 1rem;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
   animation: message 0.2s ease-in-out;
-  z-index: 1000;
+  z-index: 500;
 }
 
 .message-container h1 {
@@ -312,3 +312,111 @@ button:hover {
   text-align: center;
   outline: none;
 }
+
+.game-over-container {
+  z-index: 3000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  background: linear-gradient(180deg, #fff7d4 97%, #f0e9b5);
+  color: #b1862f;
+  font-weight: 600;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  letter-spacing: 0.1rem;
+  padding: 1.8rem 2rem 3.5rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+  animation: message 0.2s ease-in-out;
+  display: none;
+}
+
+.game-over-container h1 {
+  font-size: 7rem;
+  font-weight: 700;
+  color: #1586f8;
+  font-family: "Lilita One", Arial, Helvetica, sans-serif;
+  margin-bottom: -1rem;
+}
+
+.game-over-container button {
+  margin-top: 2rem;
+  letter-spacing: 0.3rem;
+  font-size: 2.5rem;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.scores-container {
+  z-index: 4000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  background: linear-gradient(180deg, #fff7d4 97%, #f0e9b5);
+  color: #b1862f;
+  font-weight: 600;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  letter-spacing: 0.1rem;
+  padding: 1.8rem 2rem 3.5rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+  animation: message 0.2s ease-in-out;
+  display: none;
+}
+
+.scores-container h1 {
+  font-size: 7rem;
+  font-weight: 700;
+  color: #1586f8;
+  font-family: "Lilita One", Arial, Helvetica, sans-serif;
+  margin-bottom: -1rem;
+}
+
+.scores-container button {
+  margin-top: 2rem;
+  letter-spacing: 0.3rem;
+  font-size: 2.5rem;
+}
+
+.scores {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 3rem;
+  font-weight: 700;
+  width: 8rem;
+}
+
+.scores-value {
+  font-size: 4.5rem;
+  font-weight: 700;
+  font-family: "Lilita One", Arial, Helvetica, sans-serif;
+  color: #1586f8;
+}
+
+.scores-value span {
+  font-size: 2rem;
+  font-weight: 400;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  color: #b1862f;
+}
+
+

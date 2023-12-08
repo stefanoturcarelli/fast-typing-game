@@ -12,14 +12,16 @@ import {
   create,
 } from "./utils.js";
 
-import Score from "./Score.js";
+// import Score from "./Score.js";
 
 import wordsArray from "./words.js";
 
 const overlay = select(".overlay");
 const messageContainer = select(".message-container");
+const gameOverContainer = select(".game-over-container");
 const continueBtn = select(".continue-btn");
 const resetBtn = select(".reset-btn");
+const restartBtn = selectAll(".restart-btn");
 const dataValues = selectAll(".data-value");
 const input = select(".input");
 const word = select(".word");
@@ -34,7 +36,7 @@ let points = 0;
 let totalWords = wordsArray.length;
 let percentage = 0;
 
-let time = 15;
+let time = 20;
 dataValues[2].textContent = time;
 const timerElement = dataValues[2];
 let timerInterval;
@@ -52,14 +54,18 @@ function startTimer() {
       input.style.display = "none";
       word.style.display = "none";
       console.log("game over");
-      music.pause();
+      gameOverContainer.style.display = "block";
+      // music.pause();
       endingSound.play();
+      if (gameOverContainer.style.display === "block") {
+        resetBtn.style.display = "none";
+      }
     }
   }, 1000);
 }
 
 function resetTimer() {
-  time = 15;
+  time = 20;
   dataValues[2].textContent = time;
 }
 
@@ -114,29 +120,34 @@ onEvent("click", continueBtn, () => {
   word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));
 
   input.focus();
-  music.play();
+  // music.play();
   hideMessageWithOverlay();
   startTimer();
 });
 
-onEvent("click", resetBtn, () => {
-  console.log("reset");
+restartBtn.forEach((btn) => {
+  onEvent("click", btn, () => {
+    console.log("reset");
+    if (gameOverContainer.style.display === "block") {
+      gameOverContainer.style.display = "none";
+    }
 
-  word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));
+    word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));
 
-  points = 0;
-  dataValues[0].textContent = points;
+    points = 0;
+    dataValues[0].textContent = points;
 
-  percentage = 0;
-  dataValues[1].textContent = percentage;
+    percentage = 0;
+    dataValues[1].textContent = percentage;
 
-  music.currentTime = 0;
-  music.play();
-  input.value = "";
-  startTimer();
-  word.style.display = "block";
-  input.style.display = "block";
-  input.focus();
+    music.currentTime = 0;
+    // music.play();
+    input.value = "";
+    startTimer();
+    word.style.display = "block";
+    input.style.display = "block";
+    input.focus();
+  });
 });
 
 onEvent("input", input, () => {

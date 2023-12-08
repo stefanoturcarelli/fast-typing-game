@@ -433,3 +433,7 @@ button:hover {
 .scores-list p:last-of-type {
   padding-bottom: 5rem;
 }
+
+.past-scores-btn {
+  display: none;
+}

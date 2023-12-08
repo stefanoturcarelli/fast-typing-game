@@ -1,5 +1,7 @@
 "use strict";
 
+// localStorage.clear();
+
 import {
   onEvent,
   getElement,
@@ -18,10 +20,10 @@ import wordsArray from "./words.js";
 
 const overlay = select(".overlay");
 const messageContainer = select(".message-container");
+const pastScoresBtn = select(".past-scores-btn");
 const gameOverContainer = select(".game-over-container");
 const scoreContainer = select(".scores-container");
 const scoreBtn = select(".scores-btn");
-const scoreBtnSmall = select(".score-btn-small");
 const scoreList = select(".scores-list");
 const continueBtn = select(".continue-btn");
 const resetBtn = select(".reset-btn");
@@ -64,7 +66,6 @@ function startTimer() {
     if (time >= 0) {
       timerElement.textContent = time--;
     } else {
-      console.log("game over");
       clearInterval(timerInterval);
 
       input.style.display = "none";
@@ -76,15 +77,26 @@ function startTimer() {
         date: new Date().toLocaleString(),
       };
 
-      scoreArray.push(score);
+      let highestScore = parseInt(localStorage.getItem("highestScore")) || 0;
+
+      if (points > highestScore) {
+        localStorage.setItem("highestScore", points);
+        scoreArray.push(score);
+      }
 
       scoreArray.sort((a, b) => {
         return b.points - a.points;
       });
 
+      if (scoreArray.length > 9) {
+        scoreArray.pop();
+      }
+
       scoreList.innerHTML = "";
 
       scoreArray.forEach((score) => {
+        localStorage.setItem("scores", JSON.stringify(scoreArray));
+
         const paragraph = create("p");
         paragraph.innerHTML = `#${
           scoreArray.indexOf(score) + 1
@@ -94,12 +106,9 @@ function startTimer() {
         scoreList.appendChild(paragraph);
       });
 
-      console.log(scoreArray);
-
       gameOverContainer.style.display = "block";
-      scoreBtnSmall.style.display = "none";
 
-      // music.pause();
+      music.pause();
       endingSound.play();
 
       if (gameOverContainer.style.display === "block") {
@@ -115,7 +124,6 @@ function resetTimer() {
 }
 
 function hideMessageWithOverlay() {
-  console.log("continue");
   messageContainer.classList.add("hide");
   overlay.classList.add("hide");
 }
@@ -143,15 +151,8 @@ function checkWord() {
   const inputValue = input.value.toLowerCase().trim();
 
   if (currentWord === inputValue) {
-    console.log("correct");
-
-    usedWordsArray.push(currentWord); // This is to add the used words to the array
-    wordsArray.shift(currentWord); // This is to remove the used words from the array
-
-    // console.log(`Words Arra: ${wordsArray}`);
-    // console.log(`Used Words Array: ${usedWordsArray}`);
-    // console.log(`Words Array Length: ${wordsArray.length}`);
-    // console.log(`Used Words Array Length: ${usedWordsArray.length}`);
+    usedWordsArray.push(currentWord);
+    wordsArray.shift(currentWord);
 
     points++;
     dataValues[0].textContent = points;
@@ -172,26 +173,20 @@ onEvent("click", continueBtn, () => {
   word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));
 
   input.focus();
-  // music.play();
+  music.play();
   hideMessageWithOverlay();
   startTimer();
 });
 
 restartBtn.forEach((btn) => {
   onEvent("click", btn, () => {
-    console.log("reset");
+    overlay.style.display = "none";
 
-    wordsArray.push(...usedWordsArray); // This is to add the used words back to the array
-    usedWordsArray.splice(0, usedWordsArray.length); // This is to empty the array
-
-    // console.log(`Words Arra: ${wordsArray}`);
-    // console.log(`Used Words Array: ${usedWordsArray}`);
-    // console.log(`Words Array Length: ${wordsArray.length}`);
-    // console.log(`Used Words Array Length: ${usedWordsArray.length}`);
+    wordsArray.push(...usedWordsArray); 
+    usedWordsArray.splice(0, usedWordsArray.length);
 
     if (gameOverContainer.style.display === "block") {
       gameOverContainer.style.display = "none";
-      scoreBtnSmall.style.display = "none";
     }
 
     if (scoreContainer.style.display === "block") {
@@ -200,10 +195,6 @@ restartBtn.forEach((btn) => {
 
     if (resetBtn.style.display === "none") {
       resetBtn.style.display = "block";
-    }
-
-    if (scoreArray.length > 0) {
-      scoreBtnSmall.style.display = "block";
     }
 
     word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));
@@ -215,7 +206,7 @@ restartBtn.forEach((btn) => {
     dataValues[1].textContent = percentage;
 
     music.currentTime = 0;
-    // music.play();
+    music.play();
     input.value = "";
     startTimer();
     word.style.display = "block";
@@ -229,13 +220,35 @@ onEvent("click", scoreBtn, () => {
   gameOverContainer.style.display = "none";
 });
 
-onEvent("click", scoreBtnSmall, () => {
+onEvent("click", pastScoresBtn, () => {
   scoreContainer.style.display = "block";
-  gameOverContainer.style.display = "none";
-  clearInterval(timerInterval);
-  music.pause();
+  messageContainer.style.display = "none";
+
+  scoreList.innerHTML = "";
+
+  scoreArray.forEach((score) => {
+    const paragraph = create("p");
+    paragraph.innerHTML = `#${
+      scoreArray.indexOf(score) + 1
+    } Points: <span class="score-points">${
+      score.points
+    }</span> Date: <span class="score-date">${score.date}</span>`;
+    scoreList.appendChild(paragraph);
+  });
+
+  localStorage.getItem("scores");
 });
 
 onEvent("input", input, () => {
   checkWord();
+});
+
+onEvent("load", window, () => {
+  if (localStorage.getItem("scores") !== null) {
+    pastScoresBtn.style.display = "block";
+    const scores = JSON.parse(localStorage.getItem("scores"));
+    scores.forEach((score) => {
+      scoreArray.push(score);
+    });
+  }
 });

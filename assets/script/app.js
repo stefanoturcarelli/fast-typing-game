@@ -30,7 +30,9 @@ const resetBtn = select(".reset-btn");
 const restartBtn = selectAll(".restart-btn");
 const dataValues = selectAll(".data-value");
 const input = select(".input");
+
 const word = select(".word");
+const usedWordsArray = [];
 
 const music = new Audio("./assets/media/sound/music.mp3");
 music.volume = 0.1;
@@ -42,11 +44,8 @@ let time = 20;
 let timerInterval;
 let totalWords = wordsArray.length;
 
-let count = 0;
-
 let points = 0;
 let percentage = 0;
-let date = new Date();
 
 const scoreArray = [];
 
@@ -132,8 +131,6 @@ function hideMessageWithOverlay() {
 // ! Word mechanics
 // ! ---------------------------------------------------------------------------
 
-const usedWordsArray = [];
-
 function shuffleArray(array) {
   const shuffledArray = array.sort(() => Math.random() - 0.5);
   return shuffledArray;
@@ -165,6 +162,40 @@ function checkWord() {
   }
 }
 
+function resetGameValues() {
+  overlay.style.display = "none";
+  wordsArray.push(...usedWordsArray);
+  usedWordsArray.splice(0, usedWordsArray.length);
+
+  if (gameOverContainer.style.display === "block") {
+    gameOverContainer.style.display = "none";
+  }
+
+  if (scoreContainer.style.display === "block") {
+    scoreContainer.style.display = "none";
+  }
+
+  if (resetBtn.style.display === "none") {
+    resetBtn.style.display = "block";
+  }
+
+  word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));
+
+  points = 0;
+  dataValues[0].textContent = points;
+
+  percentage = 0;
+  dataValues[1].textContent = percentage;
+
+  music.currentTime = 0;
+  music.play();
+  input.value = "";
+
+  word.style.display = "block";
+  input.style.display = "block";
+  input.focus();
+}
+
 // ! ---------------------------------------------------------------------------
 // ! Event listeners
 // ! ---------------------------------------------------------------------------
@@ -180,38 +211,8 @@ onEvent("click", continueBtn, () => {
 
 restartBtn.forEach((btn) => {
   onEvent("click", btn, () => {
-    overlay.style.display = "none";
-
-    wordsArray.push(...usedWordsArray); 
-    usedWordsArray.splice(0, usedWordsArray.length);
-
-    if (gameOverContainer.style.display === "block") {
-      gameOverContainer.style.display = "none";
-    }
-
-    if (scoreContainer.style.display === "block") {
-      scoreContainer.style.display = "none";
-    }
-
-    if (resetBtn.style.display === "none") {
-      resetBtn.style.display = "block";
-    }
-
-    word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));
-
-    points = 0;
-    dataValues[0].textContent = points;
-
-    percentage = 0;
-    dataValues[1].textContent = percentage;
-
-    music.currentTime = 0;
-    music.play();
-    input.value = "";
     startTimer();
-    word.style.display = "block";
-    input.style.display = "block";
-    input.focus();
+    resetGameValues();
   });
 });
 

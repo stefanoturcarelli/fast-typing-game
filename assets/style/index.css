@@ -197,7 +197,6 @@ button:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
   background: linear-gradient(180deg, #fff7d4 97%, #f0e9b5);
   color: #b1862f;
   font-weight: 600;
@@ -215,11 +214,14 @@ button:hover {
   font-weight: 700;
   color: #1586f8;
   font-family: "Lilita One", Arial, Helvetica, sans-serif;
-  margin-bottom: -1rem;
+  padding-bottom: 1rem;
+}
+
+.message-container p {
+  padding-bottom: 5rem;
 }
 
 .message-container button {
-  margin-top: 2rem;
   letter-spacing: 0.3rem;
   font-size: 2.5rem;
 }
@@ -358,7 +360,7 @@ button:hover {
   font-weight: 700;
   color: #1586f8;
   font-family: "Lilita One", Arial, Helvetica, sans-serif;
-  margin-bottom: -1rem;
+  padding-bottom: 1rem;
 }
 
 .game-over-container button {
@@ -369,7 +371,7 @@ button:hover {
 
 .buttons-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 2rem;
 }
@@ -395,6 +397,8 @@ button:hover {
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
   animation: message 0.2s ease-in-out;
   display: none;
+  max-width: fit-content;
+  width: inherit;
 }
 
 .scores-container h1 {
@@ -402,7 +406,7 @@ button:hover {
   font-weight: 700;
   color: #1586f8;
   font-family: "Lilita One", Arial, Helvetica, sans-serif;
-  margin-bottom: -1rem;
+  padding-bottom: 1rem;
 }
 
 .scores-container button {
@@ -424,4 +428,8 @@ button:hover {
 .scores-list p {
   font-size: 2rem;
   color: #b1862f;
+}
+
+.scores-list p:last-of-type {
+  padding-bottom: 5rem;
 }

@@ -229,6 +229,13 @@ onEvent("click", scoreBtn, () => {
   gameOverContainer.style.display = "none";
 });
 
+onEvent("click", scoreBtnSmall, () => {
+  scoreContainer.style.display = "block";
+  gameOverContainer.style.display = "none";
+  clearInterval(timerInterval);
+  music.pause();
+});
+
 onEvent("input", input, () => {
   checkWord();
 });

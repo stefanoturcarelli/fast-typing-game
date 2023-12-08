@@ -2,19 +2,7 @@
 
 // localStorage.clear();
 
-import {
-  onEvent,
-  getElement,
-  select,
-  selectAll,
-  print,
-  sleep,
-  randomNumber,
-  filterArray,
-  create,
-} from "./utils.js";
-
-// import Score from "./Score.js";
+import { onEvent, select, selectAll, create } from "./utils.js";
 
 import wordsArray from "./words.js";
 
@@ -52,67 +40,89 @@ const scoreArray = [];
 dataValues[2].textContent = time;
 const timerElement = dataValues[2];
 
+function createScore() {
+  return {
+    points: points,
+    percentage: percentage,
+    date: new Date().toLocaleString(),
+  };
+}
+
+function updateHighestScore(points) {
+  let highestScore = parseInt(localStorage.getItem("highestScore")) || 0;
+
+  if (points > highestScore) {
+    localStorage.setItem("highestScore", points);
+    return true;
+  }
+  return false;
+}
+
+function updateScoreArray(score) {
+  // Only push the score if the points are greater than the highest score
+  if (score.points > 0 && updateHighestScore(score.points)) {
+    scoreArray.push(score);
+    scoreArray.sort((a, b) => b.points - a.points);
+
+    if (scoreArray.length > 9) {
+      scoreArray.pop();
+    }
+  }
+}
+
+function updateScoreList() {
+  scoreList.innerHTML = "";
+
+  scoreArray.forEach((score) => {
+    const paragraph = create("p");
+    paragraph.innerHTML = `#${
+      scoreArray.indexOf(score) + 1
+    } Points: <span class="score-points">${
+      score.points
+    }</span> Date: <span class="score-date">${score.date}</span>`;
+    scoreList.appendChild(paragraph);
+  });
+}
+
+function generateScore() {
+  let score = createScore();
+  updateScoreArray(score);
+  updateScoreList();
+  localStorage.setItem("scores", JSON.stringify(scoreArray));
+}
+
+function updateTime() {
+  if (time >= 0) {
+    timerElement.textContent = time--;
+  }
+}
+
+function gameOverFunctionality() {
+  clearInterval(timerInterval);
+  resetBtn.style.display =
+    gameOverContainer.style.display === "block"
+      ? "none"
+      : resetBtn.style.display;
+  input.style.display = "none";
+  word.style.display = "none";
+  gameOverContainer.style.display = "block";
+  music.pause();
+  endingSound.play();
+  generateScore();
+}
+
 function startTimer() {
   resetTimer();
-
   clearInterval(timerInterval);
 
   timerInterval = setInterval(() => {
     if (time >= 0) {
-      timerElement.textContent = time--;
+      updateTime();
     } else {
-      clearInterval(timerInterval);
-
-      input.style.display = "none";
-      word.style.display = "none";
-
-      let score = {
-        points: points,
-        percentage: percentage,
-        date: new Date().toLocaleString(),
-      };
-
-      let highestScore = parseInt(localStorage.getItem("highestScore")) || 0;
-
-      if (points > highestScore) {
-        localStorage.setItem("highestScore", points);
-        scoreArray.push(score);
-      }
-
-      scoreArray.sort((a, b) => {
-        return b.points - a.points;
-      });
-
-      if (scoreArray.length > 9) {
-        scoreArray.pop();
-      }
-
-      scoreList.innerHTML = "";
-
-      scoreArray.forEach((score) => {
-        localStorage.setItem("scores", JSON.stringify(scoreArray));
-
-        const paragraph = create("p");
-        paragraph.innerHTML = `#${
-          scoreArray.indexOf(score) + 1
-        } Points: <span class="score-points">${
-          score.points
-        }</span> Date: <span class="score-date">${score.date}</span>`;
-        scoreList.appendChild(paragraph);
-      });
-
-      gameOverContainer.style.display = "block";
-
-      music.pause();
-      endingSound.play();
-
-      if (gameOverContainer.style.display === "block") {
-        resetBtn.style.display = "none";
-      }
+      gameOverFunctionality();
     }
   }, 1000);
 }
-
 function resetTimer() {
   time = 20;
   dataValues[2].textContent = time;
@@ -135,41 +145,56 @@ function getRandomWordFromShuffledArray() {
   return randomWord;
 }
 
+function updateScoreAndPercentage() {
+  points++;
+  dataValues[0].textContent = points;
+
+  percentage = Math.round((points / totalWords) * 100, 2);
+  dataValues[1].textContent = percentage;
+}
+
 function checkWord() {
   const currentWord = word.textContent;
   const inputValue = input.value.toLowerCase().trim();
 
-  if (currentWord === inputValue) {
-    usedWordsArray.push(currentWord);
-    wordsArray.shift(currentWord);
-
-    points++;
-    dataValues[0].textContent = points;
-
-    percentage = Math.round((points / totalWords) * 100, 2);
-    dataValues[1].textContent = percentage;
-
-    input.value = "";
-    word.textContent = getRandomWordFromShuffledArray();
+  if (currentWord !== inputValue) {
+    return;
   }
+
+  usedWordsArray.push(currentWord);
+  wordsArray.shift(currentWord);
+
+  updateScoreAndPercentage();
+
+  input.value = "";
+  word.textContent = getRandomWordFromShuffledArray();
+  input.focus();
+}
+function setDisplayStyle(element, display) {
+  element.style.display = display;
 }
 
 function resetGameValues() {
-  overlay.style.display = "none";
+  setDisplayStyle(overlay, "none");
   wordsArray.push(...usedWordsArray);
   usedWordsArray.splice(0, usedWordsArray.length);
 
-  if (gameOverContainer.style.display === "block") {
-    gameOverContainer.style.display = "none";
-  }
-
-  if (scoreContainer.style.display === "block") {
-    scoreContainer.style.display = "none";
-  }
-
-  if (resetBtn.style.display === "none") {
-    resetBtn.style.display = "block";
-  }
+  setDisplayStyle(
+    gameOverContainer,
+    gameOverContainer.style.display === "block"
+      ? "none"
+      : gameOverContainer.style.display
+  );
+  setDisplayStyle(
+    scoreContainer,
+    scoreContainer.style.display === "block"
+      ? "none"
+      : scoreContainer.style.display
+  );
+  setDisplayStyle(
+    resetBtn,
+    resetBtn.style.display === "none" ? "block" : resetBtn.style.display
+  );
 
   word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));
 
@@ -183,8 +208,8 @@ function resetGameValues() {
   music.play();
   input.value = "";
 
-  word.style.display = "block";
-  input.style.display = "block";
+  setDisplayStyle(word, "block");
+  setDisplayStyle(input, "block");
   input.focus();
 }
 

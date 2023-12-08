@@ -24,12 +24,17 @@ const dataValues = selectAll(".data-value");
 const input = select(".input");
 const word = select(".word");
 
-// Import music
 const music = new Audio("./assets/media/sound/music.mp3");
-// volume
 music.volume = 0.1;
 
-let time = 99;
+const endingSound = new Audio("./assets/media/sound/ending.mp3");
+endingSound.volume = 0.1;
+
+let points = 0;
+let totalWords = wordsArray.length;
+let percentage = 0;
+
+let time = 15;
 dataValues[2].textContent = time;
 const timerElement = dataValues[2];
 let timerInterval;
@@ -44,30 +49,19 @@ function startTimer() {
       timerElement.textContent = time--;
     } else {
       clearInterval(timerInterval);
+      input.style.display = "none";
+      word.style.display = "none";
       console.log("game over");
+      music.pause();
+      endingSound.play();
     }
   }, 1000);
 }
 
 function resetTimer() {
-  time = 99;
+  time = 15;
   dataValues[2].textContent = time;
 }
-
-console.log(`wordsArray: ${wordsArray}`);
-
-const wordsArrayCopy = [...wordsArray];
-console.log(`wordsArrayCopy: ${wordsArrayCopy}`);
-
-function shuffleArray(array) {
-  array.sort(() => Math.random() - 0.5);
-  console.log(`Array shuffled: ${array}`);
-}
-
-shuffleArray(wordsArrayCopy);
-console.log(`Shuffled wordsArrayCopy: ${wordsArrayCopy}`);
-
-let usedWordsArray = [];
 
 function hideMessageWithOverlay() {
   console.log("continue");
@@ -75,74 +69,76 @@ function hideMessageWithOverlay() {
   overlay.classList.add("hide");
 }
 
+// ! ---------------------------------------------------------------------------
+// ! Word mechanics
+// ! ---------------------------------------------------------------------------
+
+const usedWordsArray = [];
+
+function shuffleArray(array) {
+  const shuffledArray = array.sort(() => Math.random() - 0.5);
+  return shuffledArray;
+}
+
+function getRandomWordFromShuffledArray() {
+  const shuffledArray = shuffleArray(wordsArray);
+  const randomWord = shuffledArray[0];
+
+  return randomWord;
+}
+
+function checkWord() {
+  const currentWord = word.textContent;
+  const inputValue = input.value;
+
+  if (currentWord === inputValue) {
+    console.log("correct");
+    wordsArray.shift(currentWord);
+    console.log(wordsArray.length);
+    points++;
+    dataValues[0].textContent = points;
+
+    percentage = Math.floor((points / totalWords) * 100);
+    dataValues[1].textContent = percentage;
+
+    input.value = "";
+    word.textContent = getRandomWordFromShuffledArray();
+  }
+}
+
+// ! ---------------------------------------------------------------------------
+// ! Event listeners
+// ! ---------------------------------------------------------------------------
+
 onEvent("click", continueBtn, () => {
+  word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));
+
   input.focus();
   music.play();
   hideMessageWithOverlay();
   startTimer();
-  shuffleArray(wordsArrayCopy);
-  getWord();
 });
 
 onEvent("click", resetBtn, () => {
   console.log("reset");
 
-  // set music to 0
+  word.textContent = getRandomWordFromShuffledArray(shuffleArray(wordsArray));
+
+  points = 0;
+  dataValues[0].textContent = points;
+
+  percentage = 0;
+  dataValues[1].textContent = percentage;
+
   music.currentTime = 0;
   music.play();
-
   input.value = "";
-  input.focus();
   startTimer();
-  const newArray = [...wordsArray];
-  shuffleArray(newArray);
-  getWord();
-  usedWordsArray = [];
+  word.style.display = "block";
+  input.style.display = "block";
+  input.focus();
 });
 
-function getWord() {
-  shuffleArray(wordsArrayCopy);
-  const currentWord = wordsArrayCopy[0];
-  word.textContent = currentWord;
-  console.log(`Current word: ${currentWord}`);
-}
-
-function compareWords(inputValue, currentWord) {
-  let isInputEqualToCurrentWord = false;
-  if (inputValue === currentWord) {
-    removeWordFromArray(wordsArrayCopy, currentWord);
-    pushWordToUsedWordsArray(usedWordsArray, currentWord);
-    getWord();
-
-    console.log(`wordsArrayCopy: ${wordsArrayCopy}`);
-    console.log(`usedWordsArray: ${usedWordsArray}`);
-
-    input.value = "";
-    return (isInputEqualToCurrentWord = true);
-  }
-}
-
-function removeWordFromArray(array, word) {
-  const index = array.indexOf(word);
-  if (index > -1) {
-    array.splice(index, 1);
-  }
-}
-
-function pushWordToUsedWordsArray(array, word) {
-  array.push(word);
-}
-
 onEvent("input", input, () => {
-  const inputValue = input.value;
-  const currentWord = wordsArrayCopy[0];
-
-  compareWords(inputValue, currentWord);
-
-  // Get the input value
-  // Get the first word from the wordsArrayCopy shuffled array
-  // Check if the input value is equal to the word
-  // If it is equal, remove the word from the wordsArrayCopy array and
-  // add it to the usedWordsArray array
-  // Get the next word from the wordsArrayCopy array and repeat the process
+  checkWord();
 });

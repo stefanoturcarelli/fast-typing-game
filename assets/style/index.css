@@ -170,6 +170,7 @@ button:hover {
   gap: 1rem;
   font-size: 3rem;
   font-weight: 700;
+  width: 8rem;
 }
 
 .fa-stopwatch,
